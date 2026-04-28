@@ -1,0 +1,4 @@
+name: hello world
+description: A minimal gadget that traces execve calls
+homepageURL: https://github.com/mqasimsarfraz/build-push-gadget
+sourceURL: https://github.com/mqasimsarfraz/build-push-gadget/tree/main/example
