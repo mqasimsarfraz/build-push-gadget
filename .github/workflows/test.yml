@@ -23,7 +23,11 @@ jobs:
 
       - uses: mqasimsarfraz/setup-ig@v0
 
+      - uses: sigstore/cosign-installer@v4
+
       - uses: ./
         with:
           gadget: example/
           image: ghcr.io/${{ github.repository }}/hello-world:${{ github.sha }}
+          cosign-private-key: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
