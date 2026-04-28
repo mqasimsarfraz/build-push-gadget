@@ -44,4 +44,8 @@ runs:
     - name: Push gadget
       if: inputs.push == 'true'
       shell: bash
-      run: sudo ig image push "${{ inputs.image }}"
+      run: |
+        # Copy Docker credentials to root so sudo ig can authenticate
+        sudo mkdir -p /root/.docker
+        sudo cp "${HOME}/.docker/config.json" /root/.docker/config.json
+        sudo ig image push "${{ inputs.image }}"
