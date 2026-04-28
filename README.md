@@ -8,15 +8,15 @@ A GitHub Action to build and push [Inspektor Gadget](https://inspektor-gadget.io
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
 
-  - uses: docker/login-action@v3
+  - uses: docker/login-action@v4
     with:
       registry: ghcr.io
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
 
-  - uses: mqasimsarfraz/setup-ig@main
+  - uses: mqasimsarfraz/setup-ig@v0
 
   - uses: mqasimsarfraz/build-push-gadget@v0
     with:
@@ -27,7 +27,7 @@ steps:
 ### Build only (no push)
 
 ```yaml
-  - uses: mqasimsarfraz/setup-ig@main
+  - uses: mqasimsarfraz/setup-ig@v0
 
   - uses: mqasimsarfraz/build-push-gadget@v0
     with:
@@ -39,7 +39,7 @@ steps:
 ### Pin ig and builder versions
 
 ```yaml
-  - uses: mqasimsarfraz/setup-ig@main
+  - uses: mqasimsarfraz/setup-ig@v0
     with:
       version: "v0.51.1"
 
