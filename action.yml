@@ -23,6 +23,14 @@ inputs:
     description: "Whether to push the image after building"
     required: false
     default: "true"
+  cosign-private-key:
+    description: "Cosign private key for signing the gadget image after push"
+    required: false
+    default: ""
+  cosign-password:
+    description: "Password for the cosign private key"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -49,3 +57,15 @@ runs:
         sudo mkdir -p /root/.docker
         sudo cp "${HOME}/.docker/config.json" /root/.docker/config.json
         sudo ig image push "${{ inputs.image }}"
+
+    - name: Sign gadget with cosign
+      if: inputs.push == 'true' && inputs.cosign-private-key != ''
+      shell: bash
+      env:
+        COSIGN_PASSWORD: ${{ inputs.cosign-password }}
+        COSIGN_PRIVATE_KEY: ${{ inputs.cosign-private-key }}
+      run: |
+        DIGEST=$(sudo ig image inspect "${{ inputs.image }}" -o json | jq -r .Digest)
+        # Extract the repository from the image reference (strip the tag)
+        REPO=$(echo "${{ inputs.image }}" | sed 's/:.*$//')
+        cosign sign --key env://COSIGN_PRIVATE_KEY --yes --recursive "${REPO}@${DIGEST}"
