@@ -71,7 +71,7 @@ See the [Inspektor Gadget signing](https://www.inspektor-gadget.io/docs/latest/g
 and [verification](https://www.inspektor-gadget.io/docs/latest/reference/verify-gadgets) docs for more details.
 
 ```yaml
-  - uses: sigstore/cosign-installer@v4
+  - uses: sigstore/cosign-installer@v4.1.1
 
   - uses: mqasimsarfraz/setup-ig@v0
 

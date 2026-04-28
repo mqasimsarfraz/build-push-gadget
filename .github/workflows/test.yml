@@ -23,7 +23,7 @@ jobs:
 
       - uses: mqasimsarfraz/setup-ig@v0
 
-      - uses: sigstore/cosign-installer@v4
+      - uses: sigstore/cosign-installer@v4.1.1
 
       - uses: ./
         with:
