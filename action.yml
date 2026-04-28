@@ -1,0 +1,47 @@
+name: "Build and Push Gadget"
+description: "Build and push an Inspektor Gadget gadget OCI image using ig"
+branding:
+  icon: "package"
+  color: "purple"
+
+inputs:
+  gadget:
+    description: "Path to the gadget source directory"
+    required: true
+  image:
+    description: "Full image reference for the gadget (e.g. ghcr.io/myorg/mygadget:latest)"
+    required: true
+  builder-image:
+    description: "Builder image to use for compiling the gadget"
+    required: false
+    default: "ghcr.io/inspektor-gadget/gadget-builder:latest"
+  build-args:
+    description: "Additional arguments to pass to ig image build"
+    required: false
+    default: ""
+  push:
+    description: "Whether to push the image after building"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Pull builder image
+      shell: bash
+      run: docker pull "${{ inputs.builder-image }}"
+
+    - name: Build gadget
+      shell: bash
+      run: |
+        sudo ig image build \
+          --builder-image "${{ inputs.builder-image }}" \
+          --builder-image-pull=never \
+          -t "${{ inputs.image }}" \
+          ${{ inputs.build-args }} \
+          "${{ inputs.gadget }}"
+
+    - name: Push gadget
+      if: inputs.push == 'true'
+      shell: bash
+      run: sudo ig image push "${{ inputs.image }}"
