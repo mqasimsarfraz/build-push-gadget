@@ -18,7 +18,7 @@ steps:
 
   - uses: mqasimsarfraz/setup-ig@main
 
-  - uses: mqasimsarfraz/build-push-gadget@main
+  - uses: mqasimsarfraz/build-push-gadget@v0
     with:
       gadget: my-gadget/
       image: ghcr.io/${{ github.repository }}/my-gadget:latest
@@ -29,7 +29,7 @@ steps:
 ```yaml
   - uses: mqasimsarfraz/setup-ig@main
 
-  - uses: mqasimsarfraz/build-push-gadget@main
+  - uses: mqasimsarfraz/build-push-gadget@v0
     with:
       gadget: my-gadget/
       image: my-gadget:dev
@@ -43,7 +43,7 @@ steps:
     with:
       version: "v0.51.1"
 
-  - uses: mqasimsarfraz/build-push-gadget@main
+  - uses: mqasimsarfraz/build-push-gadget@v0
     with:
       gadget: my-gadget/
       image: ghcr.io/${{ github.repository }}/my-gadget:latest
