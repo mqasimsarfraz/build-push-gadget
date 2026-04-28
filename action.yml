@@ -61,7 +61,4 @@ runs:
         COSIGN_PASSWORD: ${{ inputs.cosign-password }}
         COSIGN_PRIVATE_KEY: ${{ inputs.cosign-private-key }}
       run: |
-        DIGEST=$(sudo -E ig image inspect --verify-image=false "${{ inputs.image }}" -o json | jq -r .Digest)
-        # Extract the repository from the image reference (strip the tag)
-        REPO=$(echo "${{ inputs.image }}" | sed 's/:.*$//')
-        cosign sign --key env://COSIGN_PRIVATE_KEY --yes --recursive "${REPO}@${DIGEST}"
+        cosign sign --key env://COSIGN_PRIVATE_KEY --yes --recursive "${{ inputs.image }}"
