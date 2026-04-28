@@ -52,11 +52,7 @@ runs:
     - name: Push gadget
       if: inputs.push == 'true'
       shell: bash
-      run: |
-        # Copy Docker credentials to root so sudo ig can authenticate
-        sudo mkdir -p /root/.docker
-        sudo cp "${HOME}/.docker/config.json" /root/.docker/config.json
-        sudo ig image push "${{ inputs.image }}"
+      run: sudo -E ig image push "${{ inputs.image }}"
 
     - name: Sign gadget with cosign
       if: inputs.push == 'true' && inputs.cosign-private-key != ''
@@ -65,7 +61,7 @@ runs:
         COSIGN_PASSWORD: ${{ inputs.cosign-password }}
         COSIGN_PRIVATE_KEY: ${{ inputs.cosign-private-key }}
       run: |
-        DIGEST=$(sudo ig image inspect "${{ inputs.image }}" -o json | jq -r .Digest)
+        DIGEST=$(sudo -E ig image inspect --verify-image=false "${{ inputs.image }}" -o json | jq -r .Digest)
         # Extract the repository from the image reference (strip the tag)
         REPO=$(echo "${{ inputs.image }}" | sed 's/:.*$//')
         cosign sign --key env://COSIGN_PRIVATE_KEY --yes --recursive "${REPO}@${DIGEST}"
